@@ -2,6 +2,8 @@ FROM python:3.6-alpine
 
 RUN apk add --no-cache curl python pkgconfig python-dev openssl-dev libffi-dev musl-dev make gcc
 
+RUN apk add --no-cache linux-headers
+
 ADD ./requirements.txt /opt/webapp-resource/
 
 WORKDIR /opt/webapp-resource
