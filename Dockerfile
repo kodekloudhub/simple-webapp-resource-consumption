@@ -1,13 +1,15 @@
-FROM python:alpine
+FROM python:3.6-alpine
 
-ADD ./requirements.txt /opt/webapp-mysql/
+RUN apk add --no-cache curl python pkgconfig python-dev openssl-dev libffi-dev musl-dev make gcc
 
-WORKDIR /opt/webapp-mysql
+ADD ./requirements.txt /opt/webapp-resource/
+
+WORKDIR /opt/webapp-resource
 
 RUN pip install -r requirements.txt
 
-ADD . /opt/webapp-mysql
+ADD . /opt/webapp-resource
 
 EXPOSE 8080
 
-CMD python /opt/webapp-mysql/app.py
+ENTRYPOINT ["python", "app.py"]
