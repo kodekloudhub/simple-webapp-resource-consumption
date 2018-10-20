@@ -37,12 +37,12 @@ def resource_count():
 
 
 @app.route("/load_cpu")
-def generate_load():
+def generate_cpu_load():
     os.system("python cpu_task.py &")
 
 
 @app.route("/load_memory")
-def generate_load():
+def generate_memory_load():
     os.system("python mem_task.py &")
 
 if __name__ == "__main__":
