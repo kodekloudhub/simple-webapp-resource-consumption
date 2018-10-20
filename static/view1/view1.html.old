@@ -1,0 +1,149 @@
+<div class="container">
+    <div ng-show="show_log" class="card-panel hoverable center-align main-card-panel">
+          <textarea style="height: 250px;" rows="15" id="logsTextArea">{{ logs }}</textarea>
+    </div>
+    <div ng-hide="show_log" class="card-panel hoverable center-align main-card-panel" style="padding-top: 0px;">
+            <div class="row">
+
+                <div class="col s2" style="margin-top: 18px;">
+
+                </div>
+                <div class="col s8" style="height: 50px;">
+                    <div style="padding-left: 100px; top: -30px;transform: scale(0.3);" class="your-clock"></div>
+                </div>
+                <div ng-show="question.type!='end_message' && !staging" class="col s1 right"> <button style="margin-top: 10px;padding: 0px;" data-position="left" data-tooltip="Skip question. Cannot revert!" class="right waves-effect waves-light btn tooltipped" ng-click="skip()"><i class="small material-icons">skip_next</i></button> </div>
+            </div>
+
+            <div ng-show="question.type=='end_message'">
+                <h2>{{ question.text }}</h2>
+                <h7> {{ question.subtext }} </h7>
+                <span> You may play around with this environment for the remainder of the time and explore more if you wish to. </span>
+            </div>
+
+            <div class="row" ng-show="staging">
+                <h5>Setting things up!</h5>
+                <div class="preloader-wrapper big active" >
+                    <div class="spinner-layer spinner-blue-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div ng-show="question.type!='end_message' && question.current_question_number && !staging" class="row">
+                <div class="col s6 left-align">
+
+                    <i ng-show="question.type=='info' " class="small material-icons">info</i>
+
+                    <h5 class="question_text">{{ question.text }}</h5>
+                    <h7 class="question_text"> {{ question.subtext }} </h7>
+
+                    <div ng-show="question.type=='multiple_choice' || question.type=='info' " style="min-height:100px">
+
+                        <div class="answer_options" ng-hide="is_loading || staging">
+                            <button id="button-{{ question.current_question_number }}-{{ $index }}" ng-repeat="option in question.options" style="margin-top: 10px; margin-right: 20px;" class="waves-effect waves-light btn" ng-click="onSubmit($event, option)">{{ option }}</button>
+                        </div>
+
+                    </div>
+
+                    <div ng-show="question.type=='config_test'" style="min-height:100px">
+                        <div style="margin-top: 50px;">
+                            <button id="button-{{ question.current_question_number }}" ng-hide="is_loading || staging" style="margin-right: 20px;" class="waves-effect waves-light btn" ng-click="onSubmit($event)"> Check </button>
+                            <a ng-hide="is_loading || staging || !question.doc_url" style="margin-right: 20px;" data-tooltip="Documentation" class="waves-effect waves-light btn-floating tooltipped" href="{{ question.doc_url }}" target="_blank"> <i class="material-icons left">info</i> Documentation </a>
+                        </div>
+
+                    </div>
+
+                    <div ng-show="question.type=='file_check'" class="form-group" style="min-height:100px">
+
+
+                    </div>
+
+                    <ul class="collapsible hint" ng-show="question.hint">
+                        <li>
+                          <div class="collapsible-header hint"><i class="material-icons">info_outline</i>Hint</div>
+                          <div class="collapsible-body"><span>{{ question.hint }}</span></div>
+                        </li>
+                    </ul>
+
+                </div>
+
+
+                <div class="col s6 valign-wrapper center-align">
+                    <div class="valign-wrapper center-align" style="height:100px;margin-top:20px">
+                            <!--<i class="red-text text-darken-4 small material-icons scale-transition scale-out" ng-class="{'scale-in': true}">cancel</i> sdfsdfsdfd-->
+
+                        <ul class="fa-ul scale-transition scale-out" ng-class="{'scale-in': alert_message}">
+                            <li style="text-align: left">
+                              <i class="fa-li fa fa-close"></i>
+                              <!--<span class="title">Title</span>-->
+                                {{ alert_message }}
+
+                            </li>
+                        </ul>
+
+                        <!--<ul class="fa-ul scale-transition scale-out" ng-class="{'scale-in': alert_additional_details}">
+                            <li ng-repeat="alert_additional_message in alert_additional_details track by $index" style="text-align: left">
+                              <i class="fa-li fa fa-close"></i>
+                              &lt;!&ndash;<span class="title">Title</span>&ndash;&gt;
+                                {{ alert_additional_message }}
+
+                            </li>
+                        </ul>-->
+
+
+                        <ul class="fa-ul scale-transition scale-out" ng-class="{'scale-in': question_tests}">
+                            <li ng-repeat="test in question_tests track by $index" style="text-align: left" ng-if="test.spec">
+                                <i class="fa-li fa fa-circle" ng-if="test.test_result==null"></i>
+                                <i class="fa-li fa fa-close" ng-if="test.test_result===false"></i>
+                                <i class="fa-li fa fa-check" ng-if="test.test_result"></i>
+                              <!--<span class="title">Title</span>-->
+                                {{ test.spec }}
+
+                            </li>
+                        </ul>
+
+                        <div class="preloader-wrapper big active" ng-show="is_loading || staging">
+                            <div class="spinner-layer spinner-blue-only">
+                              <div class="circle-clipper left">
+                                <div class="circle"></div>
+                              </div><div class="gap-patch">
+                                <div class="circle"></div>
+                              </div><div class="circle-clipper right">
+                                <div class="circle"></div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+            <div ng-if="question.image">
+                <img style="padding: 10px; border: 2px; border-style: dashed; width: 500px;" src="{{ question.image }}" />
+            </div>
+
+            <span ng-repeat="answer_status in answer_statuses track by $index" ng-class="{'green': (answer_status == 'completed' ), 'red': (answer_status == 'skipped'), 'pulse': (answer_status == 'current')}" class="status-bar-items" >
+                <!--{{ answer_status }}-->
+                {{ formatNumber($index + 1) }}
+            </span>
+
+    </div>
+    <a class="" href="" ng-click="toggleLogs()">logs</a>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.collapsible').collapsible();
+        $('.tooltipped').tooltip();
+      });
+
+</script>
