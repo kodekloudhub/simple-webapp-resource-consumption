@@ -46,8 +46,8 @@ def generate_load():
     os.system("python mem_task.py &")
 
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0", port=8080)
-    os.system("python cpu_task.py &")
+    app.run(host="0.0.0.0", port=8080)
+    # os.system("python cpu_task.py &")
 
     # os.spawnl(os.P_DETACH, 'python', 'cpu_task.py')
     # processes = cpu_count()
